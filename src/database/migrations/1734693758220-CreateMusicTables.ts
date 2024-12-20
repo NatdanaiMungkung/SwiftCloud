@@ -6,9 +6,8 @@ import {
   TableForeignKey,
 } from 'typeorm';
 
-export class CreateMusicTables1703645123456 implements MigrationInterface {
+export class CreateMusicTables1734693758220 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    // Enable uuid-ossp extension if not exists
     await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
 
     // Create artists table
@@ -356,7 +355,6 @@ export class CreateMusicTables1703645123456 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // Drop tables in reverse order
     await queryRunner.dropTable('monthly_plays');
     await queryRunner.dropTable('song_writers');
     await queryRunner.dropTable('song_artists');
