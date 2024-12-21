@@ -1,8 +1,9 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
 import { Artist } from './artist.model';
 import { Writer } from './writer.model';
 import { Album } from './album.model';
-import { PlayCount } from './play-count.model';
+import { MonthlyPlay } from './monthly-play.model';
+
 
 @ObjectType()
 export class Song {
@@ -21,8 +22,11 @@ export class Song {
   @Field(() => Album, { nullable: true })
   album?: Album;
 
-  @Field(() => [PlayCount])
-  playCounts: PlayCount[];
+  @Field(() => Int, { nullable: true })
+  releaseYear?: number;
+
+  @Field(() => [MonthlyPlay])
+  monthlyPlays: MonthlyPlay[];
 
   @Field()
   createdAt: Date;

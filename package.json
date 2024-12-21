@@ -21,7 +21,8 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:generate": "npm run typeorm -- migration:generate -d src/config/database.config.ts",
     "migration:run": "npm run typeorm -- migration:run -d src/config/database.config.ts",
-    "migration:revert": "npm run typeorm -- migration:revert -d src/config/database.config.ts"
+    "migration:revert": "npm run typeorm -- migration:revert -d src/config/database.config.ts",
+    "seed": "ts-node src/database/seeds/run-seed.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.11.2",
@@ -38,9 +39,11 @@
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.7",
     "graphql": "^16.10.0",
+    "papaparse": "^5.4.1",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
+    "ts-morph": "^24.0.0",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {

@@ -7,6 +7,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { getTypeOrmConfig } from './config/typeorm.config';
+import { join } from 'path';
+import { SongsModule } from './songs/songs.module';
 
 @Module({
   imports: [
@@ -24,15 +26,17 @@ import { getTypeOrmConfig } from './config/typeorm.config';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: true,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
+      playground: true,
+      definitions: {
+        path: join(process.cwd(), 'src/graphql.ts'),
+      },
       // cache: true, // Enable Apollo Cache Control
     }),
-    TypeOrmModule.forRoot({
-      // your database config...
-    }),
-    // other modules...
+    SongsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

@@ -7,7 +7,7 @@ export class Album {
   id: string;
 
   @Field()
-  title: string;
+  title?: string;
 
   @Field({ nullable: true })
   releaseYear?: number;

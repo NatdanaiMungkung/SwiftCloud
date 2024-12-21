@@ -2,21 +2,15 @@ import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { Song } from './song.model';
 
 @ObjectType()
-export class PlayCount {
+export class Writer {
   @Field(() => ID)
   id: string;
 
-  @Field(() => Song)
-  song: Song;
-
   @Field()
-  month: string;
+  name?: string;
 
-  @Field()
-  year: number;
-
-  @Field()
-  playCount: number;
+  @Field(() => [Song])
+  songs: Song[];
 
   @Field()
   createdAt: Date;

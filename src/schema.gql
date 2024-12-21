@@ -1,0 +1,75 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Album {
+  createdAt: DateTime!
+  id: ID!
+  releaseYear: Float
+  songs: [Song!]!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type Artist {
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  songs: [Song!]!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input MonthFilterInput {
+  month: String!
+}
+
+type MonthlyPlay {
+  createdAt: DateTime!
+  id: ID!
+  month: String!
+  playCount: Int!
+  song: Song!
+  updatedAt: DateTime!
+}
+
+input PaginationInput {
+  limit: Int! = 10
+  offset: Int! = 0
+}
+
+type Query {
+  popularAlbums(filter: MonthFilterInput, pagination: PaginationInput): [Album!]
+  popularSongs(filter: MonthFilterInput, pagination: PaginationInput): [Song!]
+  searchSongs(input: SearchSongsInput!): [Song!]
+  songsByYear(year: Int!): [Song!]
+}
+
+input SearchSongsInput {
+  pagination: PaginationInput
+  query: String!
+}
+
+type Song {
+  album: Album
+  artists: [Artist!]!
+  createdAt: DateTime!
+  id: ID!
+  monthlyPlays: [MonthlyPlay!]!
+  releaseYear: Int
+  title: String!
+  updatedAt: DateTime!
+  writers: [Writer!]!
+}
+
+type Writer {
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  songs: [Song!]!
+  updatedAt: DateTime!
+}

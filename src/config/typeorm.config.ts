@@ -10,7 +10,7 @@ export const getTypeOrmConfig = (): TypeOrmModuleOptions => ({
   database: process.env.DATABASE_NAME,
   entities: [path.join(__dirname, '../**/*.entity{.ts,.js}')],
   migrations: [path.join(__dirname, '../database/migrations/*{.ts,.js}')],
-  synchronize: process.env.NODE_ENV === 'development',
+  synchronize: false,
   logging: process.env.NODE_ENV === 'development',
 });
 
