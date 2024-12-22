@@ -52,11 +52,21 @@ export class EntityMapper {
     }
 
     static toAlbum(entity: AlbumEntity): Album {
+        if (!entity) {
+            throw new Error('Cannot map null entity to Album');
+        }
+
         const album = new Album();
-        album.id = entity.id;
-        album.title = entity.title;
-        album.createdAt = entity.createdAt;
-        album.updatedAt = entity.updatedAt;
+        Object.assign(album, {
+            id: entity.id,
+            title: entity.title,
+            createdAt: entity.createdAt,
+            updatedAt: entity.updatedAt,
+            songs: Array.isArray(entity.songs)
+                ? entity.songs.map(song => this.toSong(song))
+                : []
+        });
+
         return album;
     }
 

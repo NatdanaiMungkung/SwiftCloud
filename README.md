@@ -1,101 +1,176 @@
-docker run -d --name postgres -e POSTGRES_USER=myuser -e POSTGRES_PASSWORD=mypassword -e POSTGRES_DB=mydatabase -v pgdata:/var/lib/postgresql/data -p 5432:5432 postgres
+# SwiftCloud Backend API
 
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+This document provides instructions for setting up, running, and testing the SwiftCloud Backend API on your local machine. The API is developed using NestJS, TypeORM, PostgreSQL, and GraphQL.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Live Demo URL
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+You can access the live demo of the SwiftCloud Backend API at the following URL: 
 
-## Description
+https://swiftcloud-fvze.onrender.com/graphql
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
+## Prerequisites
 
+Ensure the following tools are installed on your system:
+
+- Node.js (v16 or above)
+- npm (Node Package Manager)
+- Docker
+- Docker Compose
+
+## Setup Instructions
+
+1. **Clone the Repository**
+   ```bash
+   git clone <repository-url>
+   cd SwiftCloud
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start PostgreSQL Using Docker**
+   Run the following command to start a PostgreSQL container:
+   ```bash
+   docker run -d \
+     --name postgres \
+     -e POSTGRES_USER=myuser \
+     -e POSTGRES_PASSWORD=mypassword \
+     -e POSTGRES_DB=mydatabase \
+     -v pgdata:/var/lib/postgresql/data \
+     -p 5432:5432 \
+     postgres
+   ```
+
+4. **Configure Environment Variables**
+   Create a `.env` file in the project root with the following contents:
+   ```env
+   DATABASE_HOST=localhost
+   DATABASE_PORT=5432
+   DATABASE_USER=myuser
+   DATABASE_PASSWORD=mypassword
+   DATABASE_NAME=mydatabase
+   ```
+
+5. **Run Database Migrations**
+   Use the following command to generate and run migrations:
+   ```bash
+   npm run migration:run
+   ```
+
+6. **Seed the Database**
+   To populate the database with initial data from the provided CSV file:
+   - Run the seed script:
+     ```bash
+     npm run seed
+     ```
+
+## Running the Application
+
+To start the application in development mode:
 ```bash
-$ npm install
+npm run start:dev
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+The GraphQL Playground will be available at:
+```
+http://localhost:3000/graphql
 ```
 
-## Run tests
+## Example GraphQL Queries
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+### Get Songs by Year
+```graphql
+query GetSongsByYear {
+  songsByYear(year: 2020) {
+    id
+    title
+    artists {
+      name
+    }
+    album {
+      title
+    }
+  }
+}
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
+### Get Popular Albums
+```graphql
+query GetPopularAlbums {
+  popularAlbums {
+    id
+    title
+    songs {
+      title
+      monthlyPlays {
+        month
+        playCount
+      }
+    }
+  }
+}
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Search Songs
+```graphql
+query GetSongs {
+  searchSongs(input: {
+    query: "love"
+    pagination: { limit: 10, offset: 0 }
+  }) {
+    title
+    artists {
+      name
+    }
+  }
+}
+```
 
-## Resources
+### Get Popular Songs
+```graphql
+query GetPopularSongs {
+  popularSongs(
+    filter: { month: "July" }
+    pagination: { limit: 5 }
+  ) {
+    title
+    monthlyPlays {
+      playCount
+    }
+  }
+}
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+## Testing
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Run unit tests using the following command:
+```bash
+npm run test
+```
 
-## Support
+## Notes for the Reviewer
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- The API supports GraphQL for flexible and dynamic querying.
+- The database is populated using data from the provided CSV file.
+- To enhance performance and scalability, TypeORM is used with PostgreSQL as the database.
+- The provided queries demonstrate key functionalities of the API.
 
-## Stay in touch
+### Future Enhancements
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+If this were a production system, the following improvements would be prioritized:
 
-## License
+1. **Advanced Caching**: Currently I use in memory caching, Integrate caching mechanisms (e.g., Redis) can improve response times for frequently queried data and allow for multiple instances of the API to share cached data.
+2. **Authentication and Authorization**: Secure the API endpoints with user authentication.
+3. **Error Handling and Validation**: Improve error handling to cover edge cases and add input validations.
+4. **Rate Limiting**: Implement rate limiting to prevent abuse and ensure fair usage of the API.
+5. **Monitoring and Logging**: Set up monitoring and logging tools to gain insights into the system's performance and troubleshoot issues effectively. Tools like Prometheus, Grafana, and ELK stack can be used for this purpose.
+6. **CI/CD Pipeline**: Implement a CI/CD pipeline to automate the deployment process and ensure a smooth and reliable release cycle.
+7. **Load Balancing**: Set up load balancing to distribute traffic evenly across multiple instances of the API and improve scalability and availability.
+8. **Database Partitioning**: As the data grows, consider partitioning the database to improve query performance and manageability. This can be done based on criteria such as date.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+Thank you for reviewing my submission! If you encounter any issues or have further questions, feel free to reach out.
+

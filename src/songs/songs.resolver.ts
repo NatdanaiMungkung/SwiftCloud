@@ -16,6 +16,14 @@ export class SongsResolver {
         return await this.songsService.findSongsByYear(year);
     }
 
+    /**
+     * This query returns a list of popular songs based on the optional filter and pagination inputs.
+     *
+     * @param {MonthFilterInput} filter - An optional input that allows filtering the songs by a specific month.
+     * @param {PaginationInput} pagination - An optional input that allows setting the limit and offset for the results.
+     *
+     * @returns {Promise<Song[]>} A promise that resolves to an array of Song objects.
+     */
     @Query(() => [Song], { name: 'popularSongs', nullable: true })
     async getPopularSongs(
         @Args('filter', { nullable: true }) filter?: MonthFilterInput,
@@ -27,6 +35,14 @@ export class SongsResolver {
         );
     }
 
+    /**
+     * This query returns a list of popular albums based on the optional filter and pagination inputs.
+     *
+     * @param {MonthFilterInput} filter - An optional input that allows filtering the albums by a specific month.
+     * @param {PaginationInput} pagination - An optional input that allows setting the limit and offset for the results.
+     *
+     * @returns {Promise<Album[]>} A promise that resolves to an array of Album objects.
+     */
     @Query(() => [Album], { name: 'popularAlbums', nullable: true })
     async getPopularAlbums(
         @Args('filter', { nullable: true }) filter?: MonthFilterInput,
@@ -38,6 +54,16 @@ export class SongsResolver {
         );
     }
 
+    /**
+     * This query returns a list of songs that match a search query.
+     *
+     * @param {SearchSongsInput} input - An input that contains the search query and optional pagination parameters.
+     * @param {string} input.query - The search query string.
+     * @param {number} input.pagination.limit - The maximum number of songs to return in the results. Defaults to 10 if not specified.
+     * @param {number} input.pagination.offset - The number of songs to skip before returning results. Defaults to 0 if not specified.
+     *
+     * @returns {Promise<Song[]>} A promise that resolves to an array of Song objects that match the search query.
+     */
     @Query(() => [Song], { name: 'searchSongs', nullable: true })
     async searchSongs(
         @Args('input') input: SearchSongsInput,

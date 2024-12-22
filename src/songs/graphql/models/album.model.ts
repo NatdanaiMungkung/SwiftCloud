@@ -20,4 +20,8 @@ export class Album {
 
   @Field()
   updatedAt: Date;
+
+  constructor() {
+    this.songs = [];  // Initialize with empty array
+  }
 }

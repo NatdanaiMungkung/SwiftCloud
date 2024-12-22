@@ -12,6 +12,9 @@ export const getTypeOrmConfig = (): TypeOrmModuleOptions => ({
   migrations: [path.join(__dirname, '../database/migrations/*{.ts,.js}')],
   synchronize: false,
   logging: process.env.NODE_ENV === 'development',
+  ssl: {
+    rejectUnauthorized: false, // Disable strict certificate validation
+  },
 });
 
 // For CLI migrations

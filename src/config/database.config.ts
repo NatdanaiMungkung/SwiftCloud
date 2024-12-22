@@ -13,6 +13,9 @@ const dataSource = new DataSource({
   database: process.env.DATABASE_NAME,
   entities: [path.join(__dirname, '../**/*.entity{.ts,.js}')],
   migrations: [path.join(__dirname, '../database/migrations/*{.ts,.js}')],
+  ssl: {
+    rejectUnauthorized: false, // Disable strict validation for development
+  },
 });
 
 export default dataSource;
